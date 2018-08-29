@@ -1,3 +1,8 @@
 lib
 bin
 include
+data
+
+*.pyc
+pip-selfcheck.json
+

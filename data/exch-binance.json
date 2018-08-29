@@ -1,6 +1,0 @@
-{
-	"hasApi" : true,
-	"apiEndpoint" : "https://api.binance.com",
-	"exchInfo" : "/api/v1/exchangeInfo",
-	"dataInfo" : "/api/v1/depth"
-}

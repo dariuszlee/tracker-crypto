@@ -1,0 +1,11 @@
+{
+	"hasApi" : true,
+	"apiEndpoint" : "https://api.binance.com",
+	"serverTime" : "/api/v1/time",
+	"exchInfo" : "/api/v1/exchangeInfo",
+	"orderInfo" : "/api/v1/depth",
+	"historicalTrade" : "/api/v1/historicalTrades",
+    "tradeInfo" : "/api/v1/trades",
+    "klineInfo" : "/api/v1/klines",
+    "aggregateInfo" : "/api/v1/aggTrades"
+}
