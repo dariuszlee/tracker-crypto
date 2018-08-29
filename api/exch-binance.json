@@ -1,6 +1,8 @@
 {
 	"hasApi" : true,
 	"apiEndpoint" : "https://api.binance.com",
+    "earliestTimeInMs" : 1502942400000,
+
 	"serverTime" : "/api/v1/time",
 	"exchInfo" : "/api/v1/exchangeInfo",
 	"orderInfo" : "/api/v1/depth",

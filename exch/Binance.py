@@ -7,12 +7,21 @@ import time
 import datetime
 from pprint import pprint
 
+def Dump_Historical():
+    binExch = BinanceExchange()
+    data = []
+    
+    # for 1
+
 class BinanceExchange:
     __Data = None
 
     def __init__(self):
         if BinanceExchange.__Data == None:
             BinanceExchange.__Data = BinanceExchange.__loadData__()
+
+    def get_earliest_time(self):
+        return BinanceExchange.__Data['earliestTimeInMs']
 
     def get_exchange_data(self):
         url = BinanceExchange.__Data['apiEndpoint'] + BinanceExchange.__Data['exchInfo']
@@ -56,7 +65,8 @@ class BinanceExchange:
         request = httpclient.HTTPRequest(url, method=httpmethod)
         response = client.fetch(request)
         return [ { 
-                    'startDate' : BinanceExchange.ms_to_datetime(f[0])
+                    'startDate' : BinanceExchange.ms_to_datetime(f[0]),
+                    'endDate' : BinanceExchange.ms_to_datetime(f[6])
                  }
                 for f in loads(response.body) 
                 ]
@@ -86,14 +96,18 @@ class BinanceExchange:
 
 if __name__ == '__main__':
     binExch = BinanceExchange()
-    # data = binExch.get_aggregate_info('BTCUSDT', myTime)
-    data = binExch.get_server_time()
-    time = data['serverTime'] - (1000 * 60 * 60 * 24 * 365 * 20)
-    # time = data['serverTime']
-    data = binExch.get_kline_info('BTCUSDT', '1M', 16, time)
-    pprint(data)
-    print("Points of data", len(data))
-    # date = datetime.datetime.fromtimestamp(time / 1000)
-    # pprint(data)
-    # with open('data/binance-example.json', 'w') as f:
-    #     dump(data, f)
+
+    earliestTime = binExch.get_earliest_time()
+    earliestDate = BinanceExchange.ms_to_datetime(earliestTime)
+
+    currentTime = int(time.time() * 1000)
+    currentDate = BinanceExchange.ms_to_datetime(currentTime)
+
+    print("First date:", earliestDate, "Current date:", currentDate)
+    dateDiff = currentDate - earliestDate
+    print("Date Diff is:", dateDiff.days, "and in hours", dateDiff.seconds / 3600)
+
+    data = binExch.get_kline_info('BTCUSDT', '1d', 1000, earliestTime)
+    print("Num of points:", len(data))
+    print("Last point is: ", data[len(data) - 1])
+    print("Last point is: ", data[0])
