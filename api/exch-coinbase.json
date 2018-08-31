@@ -1,0 +1,7 @@
+{
+	"hasApi" : true,
+	"apiEndpoint" : "https://api.coinbase.com/v2",
+    "earliestTime" : "2010-07-16",
+
+    "priceSpot" : "/prices/{0}/spot?{1}"
+}
