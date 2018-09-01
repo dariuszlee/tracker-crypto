@@ -1,0 +1,7 @@
+{
+	"hasApi" : true,
+	"apiEndpoint" : "https://api.kraken.com/0/public",
+
+	"ohlcInfo" : "/OHLC?{0}",
+	"tradesInfo" : "/Trades?{0}"
+}

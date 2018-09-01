@@ -9,9 +9,26 @@ from pprint import pprint
 
 def Dump_Historical():
     binExch = BinanceExchange()
-    data = []
-    
-    # for 1
+
+    earliestTime = binExch.get_earliest_time()
+    earliestDate = BinanceExchange.ms_to_datetime(earliestTime)
+
+    currentTime = int(time.time() * 1000)
+    currentDate = BinanceExchange.ms_to_datetime(currentTime)
+
+    print("First date:", earliestDate, "Current date:", currentDate)
+    dateDiff = currentDate - earliestDate
+    print("Date Diff is:", dateDiff.days, "and in hours", dateDiff.seconds / 3600)
+
+    data = binExch.get_kline_info('BTCUSDT', '1d', 1000, earliestTime)
+    print("Num of points:", len(data))
+    print("Last point is: ", data[len(data) - 1])
+    print("Last point is: ", data[0])
+
+def Get_Exchange_Data():
+    binExch = BinanceExchange()
+    exchDat = binExch.get_exchange_data()
+    pprint(exchDat)
 
 class BinanceExchange:
     __Data = None
@@ -95,19 +112,4 @@ class BinanceExchange:
             return data
 
 if __name__ == '__main__':
-    binExch = BinanceExchange()
-
-    earliestTime = binExch.get_earliest_time()
-    earliestDate = BinanceExchange.ms_to_datetime(earliestTime)
-
-    currentTime = int(time.time() * 1000)
-    currentDate = BinanceExchange.ms_to_datetime(currentTime)
-
-    print("First date:", earliestDate, "Current date:", currentDate)
-    dateDiff = currentDate - earliestDate
-    print("Date Diff is:", dateDiff.days, "and in hours", dateDiff.seconds / 3600)
-
-    data = binExch.get_kline_info('BTCUSDT', '1d', 1000, earliestTime)
-    print("Num of points:", len(data))
-    print("Last point is: ", data[len(data) - 1])
-    print("Last point is: ", data[0])
+    Get_Exchange_Data()
