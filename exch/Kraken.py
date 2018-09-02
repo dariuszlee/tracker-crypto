@@ -12,11 +12,26 @@ class KrakenExchange(ExchangeInterface):
 
     def __init__(self):
         if KrakenExchange.__Data == None:
-            KrakenExchange.__Data = self.__loadData__(self.__exchname())
+            KrakenExchange.__Data = self.__loadData__(self.get_exchname())
+    
+    # Current price will be the volume of the last one minute period
+    def get_current_price(self, globalCurrency):
+        localCurrency = self.get_local_exchange(globalCurrency, self.__Data)
+
+        ohlc_data = self.get_ohlc(localCurrency, 1)
+        last_ohlc = ohlc_data[len(ohlc_data) - 3]
+        if last_ohlc[5] == 0.0:
+            return last_ohlc[4]
+        else:
+            return last_ohlc[5]
 
     def get_ohlc(self, pair, interval, since = 0):
         url = self.__get_ohlc_url(pair, interval, since)
-        return self.get_data(url)
+        response = self.get_data(url)
+        if response['error'] == []:
+            return response['result'][pair]
+        else:
+            return response['error']
 
     def get_trades(self, pair, since = 0):
         url = self.__get_trades_url(pair, since)
@@ -34,8 +49,7 @@ class KrakenExchange(ExchangeInterface):
         url = urlUnformated.format(queryEncoded)
         return url
 
-
-    def __exchname(self):
+    def get_exchname(self):
         return 'kraken'
 
 
@@ -44,10 +58,7 @@ if __name__ == '__main__':
 
     timeDivision = 1000000000
     pair = 'XXBTZUSD'
-    interval = 1440
+    oneMinute = 1
+    fiveMinute = 5
 
-    ohlcDataFromTrade = kexch.get_ohlc(pair, 1440)
-    ohlcTradeDate = ohlcDataFromTrade['result'][pair][0][0]
-
-    tradeData = kexch.get_trades(pair, ohlcTradeDate * timeDivision)
-    tradeSince = tradeData['result']['last']
+    print(kexch.get_current_price(pair))

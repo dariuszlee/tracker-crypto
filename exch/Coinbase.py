@@ -1,3 +1,5 @@
+from ExchangeInterface import ExchangeInterface
+
 from json import load, loads, dump
 from urllib.parse import urlencode
 
@@ -7,14 +9,23 @@ import time
 import datetime
 from pprint import pprint
 
-class CoinbaseExchange:
+class CoinbaseExchange(ExchangeInterface):
     __Data = None
 
     def __init__(self):
         if CoinbaseExchange.__Data == None:
-            CoinbaseExchange.__Data = CoinbaseExchange.__loadData__()
+            CoinbaseExchange.__Data = self.__loadData__(self.get_exchname())
 
-    def get_price(self, currency, dateStr):
+    def get_current_price(self, globalCurrency):
+        localCurrency = self.get_local_exchange(globalCurrency, self.__Data)
+
+        price = self.get_price(localCurrency).get('data')
+        if price != None:
+            return price.get('amount')
+        else:
+            return price
+
+    def get_price(self, currency, dateStr = None):
         url = self.__get_price_uri('priceSpot', currency, dateStr)
         client = httpclient.HTTPClient()
         httpmethod = "GET"
@@ -23,20 +34,20 @@ class CoinbaseExchange:
         return loads(response.body)
 
     def __get_price_uri(self, endpoint, currency, date):
-        query = urlencode({ 'date' : date})
+        if date == None:
+            query = ""
+        else:
+            query = urlencode({ 'date' : date})
         uri = self.__get_api_uri(endpoint)
         uri = uri.format(currency, query)
-        print(uri)
         return uri
 
 
     def __get_api_uri(self, endpoint):
         return CoinbaseExchange.__Data['apiEndpoint'] + CoinbaseExchange.__Data[endpoint]
 
-    def __loadData__():
-        with open('api/exch-coinbase.json') as dataFile:
-            data = load(dataFile)
-            return data
+    def get_exchname(self):
+        return 'coinbase'
 
 def sweep_dates():
     coinbaseExch = CoinbaseExchange()
@@ -56,7 +67,6 @@ def sweep_dates():
 
 
 if __name__ == '__main__':
-    # cbExch = CoinbaseExchange()
-    # data = cbExch.get_price('BTC-USD', '2018-01-02T01:02:51Z')
-    # pprint(data)
-    sweep_dates()
+    cbExch = CoinbaseExchange()
+    data = cbExch.get_current_price('btc-usd')
+    print(data)

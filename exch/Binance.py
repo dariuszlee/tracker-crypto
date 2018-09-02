@@ -1,3 +1,5 @@
+from ExchangeInterface import ExchangeInterface
+
 from json import load, loads, dump
 from urllib.parse import urlencode
 
@@ -30,15 +32,21 @@ def Get_Exchange_Data():
     exchDat = binExch.get_exchange_data()
     pprint(exchDat)
 
-class BinanceExchange:
+class BinanceExchange(ExchangeInterface):
     __Data = None
 
     def __init__(self):
         if BinanceExchange.__Data == None:
-            BinanceExchange.__Data = BinanceExchange.__loadData__()
+            BinanceExchange.__Data = self.__loadData__(self.get_exchname())
 
     def get_earliest_time(self):
         return BinanceExchange.__Data['earliestTimeInMs']
+
+    def get_current_price(self, globalCurrency):
+        localCurrency = self.get_local_exchange(globalCurrency, self.__Data)
+        
+        currentKline = self.get_kline_info(localCurrency, '1m', 1)[0]
+        return currentKline.get('close')
 
     def get_exchange_data(self):
         url = BinanceExchange.__Data['apiEndpoint'] + BinanceExchange.__Data['exchInfo']
@@ -74,8 +82,11 @@ class BinanceExchange:
         response = client.fetch(request)
         return loads(response.body)
 
-    def get_kline_info(self, symbol, interval, points, startTime):
-        queryData = { 'symbol' : symbol, 'interval': interval, 'limit' : points, 'startTime': startTime}
+    def get_kline_info(self, symbol, interval, points = 500, startTime = None):
+        if startTime == None:
+            queryData = { 'symbol' : symbol, 'interval': interval, 'limit' : points }
+        else:
+            queryData = { 'symbol' : symbol, 'interval': interval, 'limit' : points, 'startTime': startTime}
         url = self.__create_api_uri('klineInfo', queryData)
         client = httpclient.HTTPClient()
         httpmethod = "GET"
@@ -83,6 +94,7 @@ class BinanceExchange:
         response = client.fetch(request)
         return [ { 
                     'startDate' : BinanceExchange.ms_to_datetime(f[0]),
+                    'close' : f[4],
                     'endDate' : BinanceExchange.ms_to_datetime(f[6])
                  }
                 for f in loads(response.body) 
@@ -105,11 +117,10 @@ class BinanceExchange:
     def ms_to_datetime(timeInMs):
         return datetime.datetime.fromtimestamp(timeInMs / 1000)
 
-
-    def __loadData__():
-        with open('api/exch-binance.json') as dataFile:
-            data = load(dataFile)
-            return data
+    def get_exchname(self):
+        return 'binance'
 
 if __name__ == '__main__':
-    Get_Exchange_Data()
+    binExch = BinanceExchange()
+    data = binExch.get_kline_info('BTCUSDT', '1m', 1)
+    print(data)

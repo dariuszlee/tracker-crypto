@@ -9,5 +9,9 @@
 	"historicalTrade" : "/api/v1/historicalTrades",
     "tradeInfo" : "/api/v1/trades",
     "klineInfo" : "/api/v1/klines",
-    "aggregateInfo" : "/api/v1/aggTrades"
+    "aggregateInfo" : "/api/v1/aggTrades",
+
+	"localExchanges" : {
+		"btc-usd" : "BTCUSDT"
+	}
 }

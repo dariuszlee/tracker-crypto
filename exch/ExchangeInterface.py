@@ -9,8 +9,17 @@ class ExchangeInterface:
             data = load(dataFile)
             return data
 
-    def __exchname(self):
-        raise NotImplementedError("Please implement exchange name")
+    def get_exchname(self):
+        raise NotImplementedError("Please implement exchange name.")
+
+    def get_current_price(self, currency):
+        raise NotImplementedError("Please implement get current price.")
+
+    def get_local_exchange(self, globalCurrency, exchanges):
+        exch = exchanges['localExchanges'].get(globalCurrency)
+        if exch == None:
+            raise RuntimeError("Exchange:", globalCurrency, "not implemented in api-_.json")
+        return exch
 
     def get_data(self, url):
         client = httpclient.HTTPClient()
