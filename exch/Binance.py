@@ -110,8 +110,6 @@ class BinanceExchange(ExchangeInterface):
             endpointInfo = BinanceExchange.__Data[endpoint]
         
         url = BinanceExchange.__Data['apiEndpoint'] + endpointInfo
-
-        print(url)
         return url
 
     def ms_to_datetime(timeInMs):

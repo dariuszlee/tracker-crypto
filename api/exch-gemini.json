@@ -2,7 +2,7 @@
 	"hasApi" : true,
 	"apiEndpoint" : "https://api.gemini.com/v1",
 
-	"tradesInfo" : "/trades?{0}",
+	"tradesInfo" : "/trades/{0}?{1}",
 
 	"localExchanges" : {
 		"btc-usd" : "btcusd"

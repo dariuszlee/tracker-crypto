@@ -3,6 +3,9 @@ from json import load, loads, dump
 from tornado import ioloop, httpclient
 
 class ExchangeInterface:
+    def __init__(self, data):
+        self.__Data = data
+
     def __loadData__(self, exchName):
         path = "api/exch-{0}.json".format(exchName)
         with open(path) as dataFile:
@@ -16,7 +19,7 @@ class ExchangeInterface:
         raise NotImplementedError("Please implement get current price.")
 
     def get_local_exchange(self, globalCurrency, exchanges):
-        exch = exchanges['localExchanges'].get(globalCurrency)
+        exch = self.__Data['localExchanges'].get(globalCurrency)
         if exch == None:
             raise RuntimeError("Exchange:", globalCurrency, "not implemented in api-_.json")
         return exch

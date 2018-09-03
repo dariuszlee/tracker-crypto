@@ -4,6 +4,7 @@ from Binance import BinanceExchange
 from Coinbase import CoinbaseExchange
 from Kraken import KrakenExchange
 from CoinbasePro import CoinbaseProExchange
+from Gemini import GeminiExchange
 
 class ExchangeAggregator:
     Data = None
@@ -11,6 +12,7 @@ class ExchangeAggregator:
     def __init__(self):
         self.__exchanges__ = [
             BinanceExchange(),
+            GeminiExchange(),
             CoinbaseExchange(),
             CoinbaseProExchange(),
             KrakenExchange()
