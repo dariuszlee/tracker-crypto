@@ -1,0 +1,12 @@
+{
+	"hasApi" : true,
+	"apiEndpoint" : "https://api.pro.coinbase.com",
+    "earliestTime" : "2010-07-16",
+
+    "trades" : "/products/{0}/trades",
+    "candles" : "/products/{0}/candles?{1}",
+
+	"localExchanges" : {
+		"btc-usd" : "BTC-USD"
+	}
+}

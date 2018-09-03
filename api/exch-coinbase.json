@@ -3,6 +3,9 @@
 	"apiEndpoint" : "https://api.coinbase.com/v2",
     "earliestTime" : "2010-07-16",
     "priceSpot" : "/prices/{0}/spot?{1}",
+    "sellPrice" : "/prices/{0}/sell?{1}",
+    "buyPrice" : "/prices/{0}/buy?{1}",
+
 
 	"localExchanges" : {
 		"btc-usd" : "BTC-USD"

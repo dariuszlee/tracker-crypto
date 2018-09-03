@@ -7,8 +7,6 @@ if __name__ == "__main__":
     supportedExchanges = exchAggregator.get_exchanges()
     while True:
         now = exchAggregator.get_now()
-
-        exchange
         for exch in now['exchanges']:
-            print(now['date']
+            print(now['date'])
 

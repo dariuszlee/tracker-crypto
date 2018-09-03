@@ -3,6 +3,7 @@ from json import load
 from Binance import BinanceExchange
 from Coinbase import CoinbaseExchange
 from Kraken import KrakenExchange
+from CoinbasePro import CoinbaseProExchange
 
 class ExchangeAggregator:
     Data = None
@@ -11,6 +12,7 @@ class ExchangeAggregator:
         self.__exchanges__ = [
             BinanceExchange(),
             CoinbaseExchange(),
+            CoinbaseProExchange(),
             KrakenExchange()
         ]
         self.Data = self.__load_data()

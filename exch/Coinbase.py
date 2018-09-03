@@ -27,11 +27,15 @@ class CoinbaseExchange(ExchangeInterface):
 
     def get_price(self, currency, dateStr = None):
         url = self.__get_price_uri('priceSpot', currency, dateStr)
-        client = httpclient.HTTPClient()
-        httpmethod = "GET"
-        request = httpclient.HTTPRequest(url, method=httpmethod)
-        response = client.fetch(request)
-        return loads(response.body)
+        return self.get_data(url)
+
+    def get_sell_price(self, currency, dateStr = None):
+        url = self.__get_price_uri('sellPrice', currency, dateStr)
+        return self.get_data(url)
+
+    def get_buy_price(self, currency, dateStr = None):
+        url = self.__get_price_uri('buyPrice', currency, dateStr)
+        return self.get_data(url)
 
     def __get_price_uri(self, endpoint, currency, date):
         if date == None:
@@ -68,5 +72,9 @@ def sweep_dates():
 
 if __name__ == '__main__':
     cbExch = CoinbaseExchange()
-    data = cbExch.get_current_price('btc-usd')
+    data = cbExch.get_price('btc-usd', '2018-01-01T02:02:00Z')
+    sellPrice = cbExch.get_sell_price('btc-usd', '2018-01-01T02:02:00Z')
+    buyPrice = cbExch.get_buy_price('btc-usd', '2018-01-01T02:02:00Z')
     print(data)
+    print("Sell:", sellPrice)
+    print("Buy:", buyPrice)
