@@ -29,6 +29,8 @@ class CoinbaseExchange(ExchangeInterface):
         url = self.__get_price_uri('priceSpot', currency, dateStr)
         return self.get_data(url)
 
+    def get_historical_dump(self):
+
     def get_sell_price(self, currency, dateStr = None):
         url = self.__get_price_uri('sellPrice', currency, dateStr)
         return self.get_data(url)

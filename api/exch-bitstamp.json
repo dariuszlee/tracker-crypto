@@ -1,0 +1,10 @@
+{
+	"hasApi" : true,
+	"apiEndpoint" : "https://www.bitstamp.net/api",
+
+	"tradesInfo" : "/v2/transactions/{0}?{1}",
+
+	"localExchanges" : {
+		"btc-usd" : "btcusd"
+	}
+}

@@ -38,6 +38,7 @@ class BinanceExchange(ExchangeInterface):
     def __init__(self):
         if BinanceExchange.__Data == None:
             BinanceExchange.__Data = self.__loadData__(self.get_exchname())
+        super().__init__(self.__Data)
 
     def get_earliest_time(self):
         return BinanceExchange.__Data['earliestTimeInMs']

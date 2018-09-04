@@ -7,6 +7,7 @@ class GeminiExchange(ExchangeInterface):
     def __init__(self):
         if GeminiExchange.__Data == None:
             GeminiExchange.__Data = self.__loadData__(self.get_exchname())
+        super().__init__(self.__Data)
 
     def get_current_price(self, globalCurrency):
         localCurrency = self.get_local_exchange(globalCurrency, self.__Data)

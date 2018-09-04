@@ -5,6 +5,7 @@
 
     "trades" : "/products/{0}/trades",
     "candles" : "/products/{0}/candles?{1}",
+    "time" : "/time",
 
 	"localExchanges" : {
 		"btc-usd" : "BTC-USD"

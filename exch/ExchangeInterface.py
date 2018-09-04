@@ -18,7 +18,10 @@ class ExchangeInterface:
     def get_current_price(self, currency):
         raise NotImplementedError("Please implement get current price.")
 
-    def get_local_exchange(self, globalCurrency, exchanges):
+    def get_price_at(self, currency, time):
+        raise NotImplementedError("Please implement get_price_at.")
+
+    def get_local_exchange(self, globalCurrency):
         exch = self.__Data['localExchanges'].get(globalCurrency)
         if exch == None:
             raise RuntimeError("Exchange:", globalCurrency, "not implemented in api-_.json")
@@ -31,5 +34,5 @@ class ExchangeInterface:
         response = client.fetch(request)
         return loads(response.body)
 
-    def get_url(self, data, endpoint):
-        return data['apiEndpoint'] + data[endpoint]
+    def get_url(self, endpoint):
+        return self.__Data['apiEndpoint'] + self.__Data[endpoint]
